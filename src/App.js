@@ -1,24 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Note: Routes is used instead of Switch
+import HomePage from './pages/HomePage';
+import CartPage from './pages/CartPage';
+import ProductPage from './pages/ProductPage';
+import Navbar from './components/Navbar';
+import './styles/styles.scss';
 
 function App() {
+  const [cart, setCart] = useState([]);
+
+  const addToCart = (product) => {
+    setCart([...cart, product]);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Navbar />
+        <Routes>
+          {/* Home Page */}
+          <Route path="/" element={<HomePage />} />
+
+          {/* Cart Page */}
+          <Route path="/cart" element={<CartPage cart={cart} />} />
+
+          {/* Product Page */}
+          <Route path="/product/:id" element={<ProductPage addToCart={addToCart} />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
